@@ -12,13 +12,13 @@ namespace WindowsFormsApp1.Impl {
         public List<Student> Students { get; set; }
         public List<Professor> Professors { get; set; }
         public List<Course> Courses { get; set; }
-        public List<Schedule> Schedules { get; set; }
+        public List<Schedule> ScheduledCourses { get; set; }
 
         public University() {
             Students = new List<Student>();
             Professors = new List<Professor>();
             Courses = new List<Course>();
-            Schedules = new List<Schedule>();
+            ScheduledCourses = new List<Schedule>();
         }
 
         //public List<Schedule> ScheduleList { get; set; }
@@ -69,7 +69,7 @@ namespace WindowsFormsApp1.Impl {
                 
                 Name = "Fotis",
                 Surname = "Chrysoulas",
-                RegistrationNumber = "1234",
+                RegistrationNumber = 1234,
                 AttendingCourses = new List<CoursesCategoryEnum>() {CoursesCategoryEnum.Physics,CoursesCategoryEnum.Mathematics}
             });
 
@@ -78,7 +78,7 @@ namespace WindowsFormsApp1.Impl {
             {
                 Name = "Dimitris",
                 Surname = "Raptodimos",
-                RegistrationNumber = "1235",
+                RegistrationNumber = 1235,
                 AttendingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.CivilEngineering, CoursesCategoryEnum.Mathematics }
             });
 

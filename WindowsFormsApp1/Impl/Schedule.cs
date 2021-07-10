@@ -13,5 +13,7 @@ namespace WindowsFormsApp1.Impl
         public List<Professor> Professors { get; set; }
         public List<Course> Courses { get; set; }
         public DateTime Calendar { get; set; }
+
+
     }
 }
