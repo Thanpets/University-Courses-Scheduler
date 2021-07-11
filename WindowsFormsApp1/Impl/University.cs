@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +13,16 @@ namespace WindowsFormsApp1.Impl {
         public List<Student> Students { get; set; }
         public List<Professor> Professors { get; set; }
         public List<Course> Courses { get; set; }
-        public List<Schedule> ScheduledCourses { get; set; }
+        public BindingList<Schedule> ScheduledCourses { get; set; }
 
         public University() {
             Students = new List<Student>();
             Professors = new List<Professor>();
             Courses = new List<Course>();
-            ScheduledCourses = new List<Schedule>();
+            ScheduledCourses = new BindingList<Schedule>();
         }
 
-        //public List<Schedule> ScheduleList { get; set; }
+        
 
         public void LoadMockData() {
             // TODO: MUST IMPLEMENT ENUMERATION FOR CATEGORY ?
@@ -65,10 +66,14 @@ namespace WindowsFormsApp1.Impl {
                 Hours = 50
             });
 
+
+
+
             Students.Add(new Student() {
                 
-                Name = "Fotis",
-                Surname = "Chrysoulas",
+                Name = "Thanasis",
+                Surname = "Petsinas",
+                Age = 29,
                 RegistrationNumber = 1234,
                 AttendingCourses = new List<CoursesCategoryEnum>() {CoursesCategoryEnum.Physics,CoursesCategoryEnum.Mathematics}
             });
@@ -76,19 +81,64 @@ namespace WindowsFormsApp1.Impl {
 
             Students.Add(new Student()
             {
-                Name = "Dimitris",
-                Surname = "Raptodimos",
+                Name = "Giwrgos",
+                Surname = "Papadopoulos",
+                Age = 22,
                 RegistrationNumber = 1235,
                 AttendingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.CivilEngineering, CoursesCategoryEnum.Mathematics }
             });
 
-            Professors.Add(new Professor() {
+
+
+
+            Professors.Add(new Professor()
+            {
                 Name = "Maria",
                 Surname = "Papadopoulou",
+                Age = 42,
                 Rank = "1",
-                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Physics, CoursesCategoryEnum.Mathematics }                
+                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Physics, CoursesCategoryEnum.Mathematics }
             });
-        } 
+            Professors.Add(new Professor()
+            {
+                Name = "Fotis",
+                Surname = "Chrysoulas",
+                Age = 35,
+                Rank = "Senior",
+                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Physics, CoursesCategoryEnum.Mathematics }
+            });
+        }
+
+        
+
+        public void AddScheduledCourse(Guid courseID, Guid professorID, Guid studentID, DateTime date,string lessonTime)
+        {
+
+            string professorName = Professors.FirstOrDefault(x => x.ID == professorID).Name;
+            string studentName = Students.FirstOrDefault(x => x.ID == studentID).Name;
+            string courseSubject = Courses.FirstOrDefault(x => x.ID == courseID).Subject;
+
+            string professorSurname = Professors.FirstOrDefault(x => x.ID == professorID).Surname;
+            string studentSurname = Students.FirstOrDefault(x => x.ID == studentID).Surname;
+            
+
+            Schedule schedule = new Schedule()
+            {
+                Date = date,
+                CourseID = courseID,
+                ProfessorID = professorID,
+                StudentID = studentID,
+                ProfessorName = professorName,
+                StudentName = studentName,                
+                ProfessorSurname = professorSurname,
+                StudentSurname = studentSurname,
+                CourseSubject = courseSubject,
+                LessonTime = lessonTime
+
+            };
+
+            ScheduledCourses.Add(schedule);
+        }
     }   
 }
 

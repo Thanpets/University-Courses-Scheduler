@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using WindowsFormsApp1.Impl;
 
-namespace WindowsFormsApp1.WUI {
+namespace WindowsFormsApp1.WUI
+{
 
-    public partial class MainForm : Form {
+    public partial class MainForm : Form
+    {
 
         private const string _JsonFile = "UniversityData.json";
         private University University = new University();
 
-        public MainForm() {
+        public MainForm()
+        {
             InitializeComponent();
         }
 
@@ -24,28 +28,33 @@ namespace WindowsFormsApp1.WUI {
         //    // todo : load data on enter!
         //}
 
-        private void loadDataToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void loadDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
             JavaScriptSerializer r = new JavaScriptSerializer();
 
             University = r.Deserialize<University>(File.ReadAllText("Data.json"));
 
-            foreach (Student item in University.Students) {
+            foreach (Student item in University.Students)
+            {
                 crtlCourseList.Items.Add(item.Name + " " + item.Surname);
             }
 
-            for (int i = 0; i < University.Courses.Count - 1; i++) {
+            for (int i = 0; i < University.Courses.Count - 1; i++)
+            {
 
                 crtlProfessorList.Items.Add(University.Courses[i].Code + "--" + University.Courses[i].Subject);
             }
 
 
-            foreach (Professor item in University.Professors) {
+            foreach (Professor item in University.Professors)
+            {
                 crtlStudentList.Items.Add(string.Format("{0}  {1}", item.Name, item.Surname));
             }
         }
 
-        private void saveDataToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void saveDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             JavaScriptSerializer save_Serializer = new JavaScriptSerializer();
 
             File.WriteAllText("Data.json", save_Serializer.Serialize(University));
@@ -53,112 +62,169 @@ namespace WindowsFormsApp1.WUI {
         #endregion
 
         #region new code
-        private void MainForm_Load(object sender, EventArgs e) {
-            SerializeToJson();
-            
-            LoadMockDataToLists();           
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            //SerializeToJson();
+
+            LoadMockDataToLists();
+
+            //load mock data to prof,student,course grids
+            ctrlProfessorList2.DataSource = University.Professors;
+            crtlStudentList2.DataSource = University.Students;
+            crtlCourseList2.DataSource = University.Courses;
+
+
+
             // todo : load data on enter!
         }
 
-        //private void initializeDedomenaToolStripMenuItem_Click(object sender, EventArgs e) {
-
-        //    //University.LoadMockData();
-
-        //    foreach (Student a in University.Students) {
-        //        crtlCourseList.Items.Add(a.Name + " " + a.Surname);
-        //    }
-
-        //    foreach (Course bb in University.Courses) {
-        //        crtlProfessorList.Items.Add(bb.Code + "--" + bb.Subject);
-        //    }
 
 
-        //    foreach (Professor cc1 in University.Professors) {
 
-        //        crtlStudentList.Items.Add(string.Format("{0}  {1}", cc1.Name, cc1.Surname));
-        //    }
+        private void crtlAddNewSchedule_Click(object sender, EventArgs e)
+        {
 
-        //    //should run only once!
-        //    button11.Hide();
-        //}
 
-        //private void button9_Click(object sender, EventArgs e) {
 
-        //    JavaScriptSerializer GG = new JavaScriptSerializer();
+            DataGridViewSelectedRowCollection selectedProfessorItem = ctrlProfessorList2.SelectedRows;
+            DataGridViewSelectedRowCollection selectedCourseItem = crtlCourseList2.SelectedRows;
+            DataGridViewSelectedRowCollection selectedStudentItem = crtlStudentList2.SelectedRows;
+            //getting selected IDS
+            var professorID = (Guid)selectedProfessorItem[0].Cells[4].Value;
+            var studentID = (Guid)selectedStudentItem[0].Cells[4].Value;
+            var courseID = (Guid)selectedCourseItem[0].Cells[4].Value;
 
-        //    University = GG.Deserialize<University>(File.ReadAllText("Data.json"));
+            crtlDatePicker.CustomFormat = "dd/MM/yyyy";
 
-        //    foreach (Student item in University.Students) {
-        //        crtlCourseList.Items.Add(item.Name + " " + item.Surname);
-        //    }
+            DateTime calendar = crtlDatePicker.Value;
 
-        //    for (int i = 0; i < University.Courses.Count - 1; i++) {
+            string lessonTime = ctrlAvailableHours.Text;
 
-        //        crtlProfessorList.Items.Add(University.Courses[i].Code + "--" + University.Courses[i].Subject);
-        //    }
-
-        //    // we do a loop
-        //    foreach (Professor item in University.Professors) {
-        //        // we add to the list
-        //        crtlStudentList.Items.Add(string.Format("{0}  {1}", item.Name, item.Surname));
-        //    }
-
-        //}
-
-        //private void button10_Click(object sender, EventArgs e) {
-        //    JavaScriptSerializer ff = new JavaScriptSerializer();
-
-        //    File.WriteAllText("Data.json", ff.Serialize(University));
-        //}
-
-        private void crtlAddNewSchedule_Click(object sender, EventArgs e) {
-
-            try {
-                Schedule newSchedule = new Schedule();
-                //newSchedule = (Schedule)crtlProfessorList.SelectedItem;
-                University.ScheduledCourses.Add(newSchedule);
-                gridCourse = (DataGridViewTextBoxColumn)crtlCourseList.SelectedItem;
-                gridProfessor = (DataGridViewTextBoxColumn)crtlProfessorList.SelectedItem;
-                gridStudent = (DataGridViewTextBoxColumn)crtlStudentList.SelectedItem;
-                // TODO: 1. CANNOT ADD SAME STUDENT + PROFESSOR IN SAME DATE & HOUR
-
-                // TODO: 2. EACH STUDENT CANNOT HAVE MORE THAN 3 COURSES PER DAY!
-
-                // TODO: 3. A PROFESSOR CANNOT TEACH MORE THAN 4 COURSES PER DAY AND 40 COURSES PER WEEK
-
-                //University.ScheduledCourses.Add(new Schedule() { 
-                    //Professors.Add(crtlProfessorList.SelectedItem),
-                    //Courses = crtlCourseList.SelectedItem.ToString(), 
-                    //Students = crtlStudentList.SelectedItem.ToString(),
-                    //Calendar = dateTimePicker2.Value });
-
-                ctrlSchedule.Items.Clear();
-                foreach (Schedule item in University.ScheduledCourses) {
-
-                    ctrlSchedule.Items.Add(item.Calendar + " | " + item.Courses + " | " + item.Students + " | " + item.Professors);
-
-                }
+            if (string.IsNullOrEmpty(lessonTime))
+            {
+                MessageBox.Show("Please pick a Course Time before adding a new schedule");
+                return;
             }
-            catch { 
+
+            if (ValidateStudentCourses(calendar,studentID) == false)
+            {
+                return;
+            }
+            if (ValidateProfessorCourses(calendar,professorID) == false)
+            {
+                return;
+            }
+
             
-            }
-            //finally {
-            //    MessageBox.Show("all ok!");
 
-            //}
+
+            if (ValidateStudentAvailability(lessonTime, calendar, studentID) == false)
+            {
+                return;
+            }
+            if (ValidateProfessorAvailability(lessonTime, calendar, professorID) == false)
+            {
+                return;
+            }
+            if (true)
+            {
+
+            }
+
+
+            University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, lessonTime); //adding new scheduledcourse
+
+            crtlScheduleList.DataSource = University.ScheduledCourses;  //showing data to scheduleGrid
+
+
+            // TODO: 1. CANNOT ADD SAME STUDENT + PROFESSOR IN SAME DATE & HOUR
+
+            // TODO: 2. EACH STUDENT CANNOT HAVE MORE THAN 3 COURSES PER DAY!
+
+            // TODO: 3. A PROFESSOR CANNOT TEACH MORE THAN 4 COURSES PER DAY AND 40 COURSES PER WEEK
+
+
+
         }
 
-        public void validate_professorCourse_with_studentCourse() { 
-        
+        public bool ValidateProfessorCourses(DateTime calendar,Guid professorID)
+        {
+            var professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
+            var countDailyLessons = professorSchedule.Count(x => x.Date == calendar.Date);
+
+            if (countDailyLessons >= 4)
+            {
+                MessageBox.Show("Selected Professor already scheduled to 4 courses in this day");
+                return false;
+            }
+            return true;
+        }
+
+
+        public bool ValidateStudentCourses(DateTime calendar,Guid studentID)
+        {
+            //Validates if student is signed to 3 lessons in selected day/date
+            var studentSchedule = University.ScheduledCourses.Where(x => x.StudentID == studentID);
+            var countDailyLessons = studentSchedule.Count(x => x.Date == calendar.Date);
+
+            if (countDailyLessons >= 3)
+            {
+                MessageBox.Show("Selected Student already scheduled to  3 courses in this day");
+                return false;
+            }
+            return true;
+        }
+        public bool ValidateStudentAvailability(string lessonTime, DateTime calendar, Guid studentID)
+        {
+            //validates if student is not occupied with another lesson at time.
+            IEnumerable<Schedule> studentSchedule = University.ScheduledCourses.Where(x => x.StudentID == studentID);
+            foreach (Schedule schedule in studentSchedule)
+            {
+                if (schedule.Date == calendar.Date)
+                {
+                    if (schedule.LessonTime == lessonTime)
+                    {
+                        MessageBox.Show("Selected Student is in another course in selected hour");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public bool ValidateProfessorAvailability(string lessonTime, DateTime calendar, Guid professorID)
+        {
+            //validates if professor is not occupied with another lesson at time.
+            IEnumerable<Schedule> professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
+            foreach (Schedule schedule in professorSchedule)
+            {
+                if (schedule.Date == calendar.Date)
+                {
+                    if (schedule.LessonTime == lessonTime)
+                    {
+                        MessageBox.Show("Selected Professor is in another scheduled course in selected hour");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+
+
+        public void validate_professorCourse_with_studentCourse()
+        {
+
             //TODO: ???
 
         }
 
         #endregion
 
-        private void button11_Click(object sender, EventArgs e) {
+        private void button11_Click(object sender, EventArgs e)
+        {
 
-            
+
 
             //University.LoadMockData();
 
@@ -180,28 +246,29 @@ namespace WindowsFormsApp1.WUI {
             //button11.Hide();
         }
 
-        private void addToScheduleToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void addToScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
             // todo : display on a grid??
 
             // todo: add exception handling?
-                //University.Schedules.Add(new Schedule() { 
-                //    Course = crtlProfessorList.SelectedItem.ToString(),
-                //    Student = crtlCourseList.SelectedItem.ToString(),
-                //    Professor = crtlStudentList.SelectedItem.ToString(), 
-                //    Calendar = dateTimePicker2.Value });
+            //University.Schedules.Add(new Schedule() { 
+            //    Course = crtlProfessorList.SelectedItem.ToString(),
+            //    Student = crtlCourseList.SelectedItem.ToString(),
+            //    Professor = crtlStudentList.SelectedItem.ToString(), 
+            //    Calendar = dateTimePicker2.Value });
 
-                ctrlSchedule.Items.Clear();
-                foreach (Schedule schedule in University.ScheduledCourses) {
+            //ctrlSchedule.Items.Clear();
+            //foreach (Schedule schedule in University.ScheduledCourses) {
 
-                    ctrlSchedule.Items.Add(
-                        schedule.Calendar + " " + 
-                        schedule.Courses + " " + 
-                        schedule.Students + " " + 
-                        schedule.Professors);
+            //    ctrlSchedule.Items.Add(
+            //        schedule.Calendar + " " + 
+            //        schedule.Courses + " " + 
+            //        schedule.Students + " " + 
+            //        schedule.Professors);
 
-                }
-        
+            //}
+
         }
         private void SerializeToJson()
         {
@@ -213,7 +280,7 @@ namespace WindowsFormsApp1.WUI {
         }
 
 
-        
+
 
         private void LoadMockDataToLists()
         {
@@ -224,17 +291,17 @@ namespace WindowsFormsApp1.WUI {
             foreach (Professor professor in University.Professors)
             {
                 // we add to the list
-                crtlProfessorList.Items.Add($"{professor.Name}\t{professor.Surname}\t{professor.Age}\t{professor.Rank}");
+                crtlProfessorList.Items.Add($"{professor.ID}\t{professor.Name}\t{professor.Surname}\t{professor.Age}\t{professor.Rank}");
             }
             foreach (Student student in University.Students)
             {
                 // we add to the list
-                crtlStudentList.Items.Add($"{student.Name}\t{student.Surname}\t{student.Age}\t{student.RegistrationNumber}");
+                crtlStudentList.Items.Add($"{student.ID}\t{student.Name}\t{student.Surname}\t{student.Age}\t{student.RegistrationNumber}");
             }
             foreach (Course course in University.Courses)
             {
                 // we add to the list
-                crtlCourseList.Items.Add($"{course.Code}\t{course.Subject}\t  {course.Hours}");
+                crtlCourseList.Items.Add($"{course.ID}\t{course.Code}\t{course.Subject}\t{course.Hours}");
             }
         }
 

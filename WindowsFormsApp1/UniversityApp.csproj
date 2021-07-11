@@ -81,6 +81,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Properties\DataSources\WindowsFormsApp1.Impl.Course.datasource" />
+    <None Include="Properties\DataSources\WindowsFormsApp1.Impl.Professor.datasource" />
+    <None Include="Properties\DataSources\WindowsFormsApp1.Impl.Schedule.datasource" />
+    <None Include="Properties\DataSources\WindowsFormsApp1.Impl.Student.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
