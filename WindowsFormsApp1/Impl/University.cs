@@ -133,7 +133,7 @@ namespace WindowsFormsApp1.Impl {
                 ProfessorSurname = professorSurname,
                 StudentSurname = studentSurname,
                 CourseSubject = courseSubject,
-                LessonTime = lessonTime
+                CourseTime = lessonTime
 
             };
 
