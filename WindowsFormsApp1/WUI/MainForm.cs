@@ -84,9 +84,8 @@ namespace WindowsFormsApp1.WUI
             }
 
 
-            University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, courseTime); //adding new scheduledcourse
-
-            RefreshSchedule();  //showing data to scheduleGrid
+            University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, courseTime); //adding new scheduledcourse       
+            RefreshSchedule();  //refreshing data to scheduleGrid
 
 
             // TODO: 1. CANNOT ADD SAME STUDENT + PROFESSOR IN SAME DATE & HOUR
@@ -163,7 +162,7 @@ namespace WindowsFormsApp1.WUI
             return true;
         }
 
-
+        
 
         public void validate_professorCourse_with_studentCourse()
         {
@@ -206,9 +205,9 @@ namespace WindowsFormsApp1.WUI
                 MessageBox.Show("Please select a schedule to update");
                 return;
             }
+
             GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
             University.UpdateScheduledCourse(scheduleID, courseID, professorID, studentID, calendar.Date, courseTime);
-            
             RefreshSchedule();
 
 
@@ -234,6 +233,7 @@ namespace WindowsFormsApp1.WUI
         {
             
             ctrlScheduleList.DataSource = University.ScheduledCourses;
+            ctrlScheduleList.Refresh();
         }
 
         private void GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime date, out string courseTime)
