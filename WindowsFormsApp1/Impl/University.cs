@@ -27,7 +27,7 @@ namespace WindowsFormsApp1.Impl
 
 
 
-        public void LoadMockData()
+        public void InitMockData()
         {
             // TODO: MUST IMPLEMENT ENUMERATION FOR CATEGORY ?
             Courses.Add(new Course()
