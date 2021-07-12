@@ -35,19 +35,19 @@ namespace WindowsFormsApp1.WUI
             if (File.Exists(_JsonFile))
             {
                 DeserializeFromJson();
-                
+
             }
             else
             {
                 University.InitMockData();
-                
+
             }
             LoadDataToGrids();
             RefreshSchedule();
             // todo : load data on enter!
         }
 
-       
+
 
         private void ctrlAddNewSchedule_Click(object sender, EventArgs e)
         {
@@ -57,6 +57,10 @@ namespace WindowsFormsApp1.WUI
             if (string.IsNullOrEmpty(courseTime))
             {
                 MessageBox.Show("Please pick a Course Time before adding a new schedule");
+                return;
+            }
+            if (ValidateWeekend(calendar) == false)
+            {
                 return;
             }
 
@@ -80,11 +84,11 @@ namespace WindowsFormsApp1.WUI
             {
                 return;
             }
-            
 
 
-            University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, courseTime);        
-            RefreshSchedule();  
+
+            University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, courseTime);
+            RefreshSchedule();
 
 
             // TODO: 1. CANNOT ADD SAME STUDENT + PROFESSOR IN SAME DATE & HOUR
@@ -96,7 +100,7 @@ namespace WindowsFormsApp1.WUI
 
 
         }
-        
+
 
         private void ctrlUpdateSelected_Click(object sender, EventArgs e)
         {
@@ -112,6 +116,10 @@ namespace WindowsFormsApp1.WUI
             if (string.IsNullOrEmpty(courseTime))
             {
                 MessageBox.Show("Please pick a Course Time before updating selected schedule");
+                return;
+            }
+            if (ValidateWeekend(calendar) == false)
+            {
                 return;
             }
 
@@ -209,7 +217,7 @@ namespace WindowsFormsApp1.WUI
             }
             return true;
         }
-        
+
 
         public bool ValidateStudentCourses(DateTime calendar, Guid studentID)
         {
@@ -232,10 +240,10 @@ namespace WindowsFormsApp1.WUI
             {
                 if (schedule.Date.Date == calendar.Date && schedule.CourseTime == courseTime)
                 {
-                    
-                        MessageBox.Show("Selected Student is in another course in selected hour");
-                        return false;
-                    
+
+                    MessageBox.Show("Selected Student is in another course in selected hour");
+                    return false;
+
                 }
             }
             return true;
@@ -250,8 +258,8 @@ namespace WindowsFormsApp1.WUI
                 if (schedule.Date.Date == calendar.Date && schedule.CourseTime == courseTime)
                 {
 
-                        MessageBox.Show("Selected Professor is in another scheduled course in selected hour");
-                        return false;
+                    MessageBox.Show("Selected Professor is in another scheduled course in selected hour");
+                    return false;
 
                 }
             }
@@ -260,14 +268,24 @@ namespace WindowsFormsApp1.WUI
 
 
 
-        public void ValidateProfessorCourseWithStudentCourse(Guid professorID,Guid studentID)
+
+        private bool ValidateWeekend(DateTime calendar)
+        {
+            if (calendar.Date.DayOfWeek == DayOfWeek.Saturday || calendar.Date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                MessageBox.Show("Get a life ....");
+                return false;
+            }
+            return true;
+        }
+        private void ValidateProfessorCourseWithStudentCourse(Guid professorID, Guid studentID)
         {
 
             //TODO: ???
 
         }
 
-       
+
 
 
 
@@ -275,7 +293,7 @@ namespace WindowsFormsApp1.WUI
         private void SerializeToJson()
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            string data = serializer.Serialize(University);                
+            string data = serializer.Serialize(University);
             string path = Path.Combine(Environment.CurrentDirectory, _JsonFile);
             File.WriteAllText(path, data);
 
@@ -293,8 +311,8 @@ namespace WindowsFormsApp1.WUI
                 {
                     string data = File.ReadAllText(path);
 
-                    University = serializer.Deserialize<University>(data);  
-                    
+                    University = serializer.Deserialize<University>(data);
+
                 }
 
 
@@ -307,7 +325,7 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-       
+
 
         private void RefreshSchedule()
         {
@@ -315,7 +333,7 @@ namespace WindowsFormsApp1.WUI
             crtlScheduleGrid.DataSource = University.ScheduledCourses;
             crtlScheduleGrid.Refresh();
         }
-         private void LoadDataToGrids()
+        private void LoadDataToGrids()
         {
             ctrlProfessorGrid.DataSource = University.Professors;
             ctrlStudentGrid.DataSource = University.Students;
@@ -338,7 +356,7 @@ namespace WindowsFormsApp1.WUI
 
             courseTime = ctrlCourseHours.Text;
 
-            
+
         }
 
         private void GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime date, out string courseTime)
@@ -365,7 +383,7 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-        
+
 
         #endregion
     }

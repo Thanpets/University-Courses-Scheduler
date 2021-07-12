@@ -237,7 +237,7 @@ namespace WindowsFormsApp1.WUI {
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(730, 3);
+            this.label8.Location = new System.Drawing.Point(760, 3);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(83, 24);
             this.label8.TabIndex = 17;
@@ -310,7 +310,7 @@ namespace WindowsFormsApp1.WUI {
             this.ctrlStudentGrid.Name = "ctrlStudentGrid";
             this.ctrlStudentGrid.ReadOnly = true;
             this.ctrlStudentGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ctrlStudentGrid.Size = new System.Drawing.Size(483, 189);
+            this.ctrlStudentGrid.Size = new System.Drawing.Size(500, 189);
             this.ctrlStudentGrid.TabIndex = 13;
             // 
             // ctrlProfessorGrid
@@ -475,6 +475,7 @@ namespace WindowsFormsApp1.WUI {
             this.AttendingCourses.Name = "AttendingCourses";
             this.AttendingCourses.ReadOnly = true;
             this.AttendingCourses.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.AttendingCourses.Width = 150;
             // 
             // iDDataGridViewTextBoxColumn1
             // 
@@ -582,6 +583,7 @@ namespace WindowsFormsApp1.WUI {
             this.registrationNumberDataGridViewTextBoxColumn.HeaderText = "Registration Number";
             this.registrationNumberDataGridViewTextBoxColumn.Name = "registrationNumberDataGridViewTextBoxColumn";
             this.registrationNumberDataGridViewTextBoxColumn.ReadOnly = true;
+            this.registrationNumberDataGridViewTextBoxColumn.Width = 65;
             // 
             // iDDataGridViewTextBoxColumn2
             // 
