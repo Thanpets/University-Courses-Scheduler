@@ -70,8 +70,8 @@ namespace WindowsFormsApp1.WUI {
             this.courseBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.surnameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.registrationNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ageDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.registrationNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iDDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.studentBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -95,12 +95,13 @@ namespace WindowsFormsApp1.WUI {
             // 
             // ctrlAddNewSchedule
             // 
+            this.ctrlAddNewSchedule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ctrlAddNewSchedule.Location = new System.Drawing.Point(471, 294);
             this.ctrlAddNewSchedule.Name = "ctrlAddNewSchedule";
             this.ctrlAddNewSchedule.Size = new System.Drawing.Size(146, 55);
             this.ctrlAddNewSchedule.TabIndex = 8;
             this.ctrlAddNewSchedule.Text = "Add New Schedule";
-            this.ctrlAddNewSchedule.UseVisualStyleBackColor = true;
+            this.ctrlAddNewSchedule.UseVisualStyleBackColor = false;
             this.ctrlAddNewSchedule.Click += new System.EventHandler(this.ctrlAddNewSchedule_Click);
             // 
             // ctrlDatePicker
@@ -114,9 +115,10 @@ namespace WindowsFormsApp1.WUI {
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.SystemColors.Highlight;
             this.label6.Font = new System.Drawing.Font("Calibri", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(458, 24);
+            this.label6.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label6.Location = new System.Drawing.Point(616, 30);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(426, 42);
             this.label6.TabIndex = 13;
@@ -129,7 +131,7 @@ namespace WindowsFormsApp1.WUI {
             this.ctrlExitApplication});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1464, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1842, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -140,8 +142,8 @@ namespace WindowsFormsApp1.WUI {
             this.toolStripMenuItem2,
             this.ctrlMenuSaveChanges});
             this.mainToolStripMenuItem.Name = "mainToolStripMenuItem";
-            this.mainToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.mainToolStripMenuItem.Text = "Main";
+            this.mainToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
+            this.mainToolStripMenuItem.Text = "Main Menu";
             // 
             // toolStripMenuItem1
             // 
@@ -182,7 +184,7 @@ namespace WindowsFormsApp1.WUI {
             this.panel1.Controls.Add(this.ctrlProfessorList);
             this.panel1.Controls.Add(this.ctrlDatePicker);
             this.panel1.Controls.Add(this.ctrlAddNewSchedule);
-            this.panel1.Location = new System.Drawing.Point(56, 69);
+            this.panel1.Location = new System.Drawing.Point(231, 69);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1275, 352);
             this.panel1.TabIndex = 17;
@@ -219,12 +221,13 @@ namespace WindowsFormsApp1.WUI {
             // 
             // ctrlUpdateSchedule
             // 
-            this.ctrlUpdateSchedule.Location = new System.Drawing.Point(627, 297);
+            this.ctrlUpdateSchedule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ctrlUpdateSchedule.Location = new System.Drawing.Point(627, 294);
             this.ctrlUpdateSchedule.Name = "ctrlUpdateSchedule";
-            this.ctrlUpdateSchedule.Size = new System.Drawing.Size(139, 52);
+            this.ctrlUpdateSchedule.Size = new System.Drawing.Size(139, 55);
             this.ctrlUpdateSchedule.TabIndex = 19;
             this.ctrlUpdateSchedule.Text = "Update Selected Schedule";
-            this.ctrlUpdateSchedule.UseVisualStyleBackColor = true;
+            this.ctrlUpdateSchedule.UseVisualStyleBackColor = false;
             this.ctrlUpdateSchedule.Click += new System.EventHandler(this.ctrlUpdateSelected_Click);
             // 
             // label8
@@ -267,6 +270,7 @@ namespace WindowsFormsApp1.WUI {
             this.ctrlCourseList.AllowUserToAddRows = false;
             this.ctrlCourseList.AllowUserToDeleteRows = false;
             this.ctrlCourseList.AutoGenerateColumns = false;
+            this.ctrlCourseList.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.ctrlCourseList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlCourseList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.categoryDataGridViewTextBoxColumn,
@@ -288,12 +292,13 @@ namespace WindowsFormsApp1.WUI {
             this.ctrlStudentList.AllowUserToAddRows = false;
             this.ctrlStudentList.AllowUserToDeleteRows = false;
             this.ctrlStudentList.AutoGenerateColumns = false;
+            this.ctrlStudentList.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.ctrlStudentList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlStudentList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameDataGridViewTextBoxColumn1,
             this.surnameDataGridViewTextBoxColumn1,
-            this.registrationNumberDataGridViewTextBoxColumn,
             this.ageDataGridViewTextBoxColumn1,
+            this.registrationNumberDataGridViewTextBoxColumn,
             this.iDDataGridViewTextBoxColumn2});
             this.ctrlStudentList.DataSource = this.studentBindingSource;
             this.ctrlStudentList.Location = new System.Drawing.Point(438, 30);
@@ -309,6 +314,7 @@ namespace WindowsFormsApp1.WUI {
             this.ctrlProfessorList.AllowUserToAddRows = false;
             this.ctrlProfessorList.AllowUserToDeleteRows = false;
             this.ctrlProfessorList.AutoGenerateColumns = false;
+            this.ctrlProfessorList.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.ctrlProfessorList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlProfessorList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameDataGridViewTextBoxColumn,
@@ -329,6 +335,7 @@ namespace WindowsFormsApp1.WUI {
             // 
             this.ctrlScheduleList.AllowUserToAddRows = false;
             this.ctrlScheduleList.AutoGenerateColumns = false;
+            this.ctrlScheduleList.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.ctrlScheduleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlScheduleList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.scheduleProfessorName,
@@ -406,7 +413,7 @@ namespace WindowsFormsApp1.WUI {
             this.panel2.Controls.Add(this.label14);
             this.panel2.Controls.Add(this.ctrlDeleteSchedule);
             this.panel2.Controls.Add(this.ctrlScheduleList);
-            this.panel2.Location = new System.Drawing.Point(56, 448);
+            this.panel2.Location = new System.Drawing.Point(231, 447);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1275, 352);
             this.panel2.TabIndex = 19;
@@ -423,22 +430,24 @@ namespace WindowsFormsApp1.WUI {
             // 
             // ctrlDeleteSchedule
             // 
+            this.ctrlDeleteSchedule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ctrlDeleteSchedule.Location = new System.Drawing.Point(943, 49);
             this.ctrlDeleteSchedule.Name = "ctrlDeleteSchedule";
             this.ctrlDeleteSchedule.Size = new System.Drawing.Size(239, 56);
             this.ctrlDeleteSchedule.TabIndex = 20;
             this.ctrlDeleteSchedule.Text = "Delete Selected Schedule";
-            this.ctrlDeleteSchedule.UseVisualStyleBackColor = true;
+            this.ctrlDeleteSchedule.UseVisualStyleBackColor = false;
             this.ctrlDeleteSchedule.Click += new System.EventHandler(this.ctrlDeleteSchedule_Click);
             // 
             // ctrlSaveChanges
             // 
+            this.ctrlSaveChanges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ctrlSaveChanges.Location = new System.Drawing.Point(943, 239);
             this.ctrlSaveChanges.Name = "ctrlSaveChanges";
             this.ctrlSaveChanges.Size = new System.Drawing.Size(239, 56);
             this.ctrlSaveChanges.TabIndex = 22;
             this.ctrlSaveChanges.Text = "Save Schedule Changes";
-            this.ctrlSaveChanges.UseVisualStyleBackColor = true;
+            this.ctrlSaveChanges.UseVisualStyleBackColor = false;
             this.ctrlSaveChanges.Click += new System.EventHandler(this.ctrlSaveChanges_Click);
             // 
             // iDDataGridViewTextBoxColumn1
@@ -531,19 +540,19 @@ namespace WindowsFormsApp1.WUI {
             this.surnameDataGridViewTextBoxColumn1.Name = "surnameDataGridViewTextBoxColumn1";
             this.surnameDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
-            // registrationNumberDataGridViewTextBoxColumn
-            // 
-            this.registrationNumberDataGridViewTextBoxColumn.DataPropertyName = "RegistrationNumber";
-            this.registrationNumberDataGridViewTextBoxColumn.HeaderText = "Registration Number";
-            this.registrationNumberDataGridViewTextBoxColumn.Name = "registrationNumberDataGridViewTextBoxColumn";
-            this.registrationNumberDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
             // ageDataGridViewTextBoxColumn1
             // 
             this.ageDataGridViewTextBoxColumn1.DataPropertyName = "Age";
             this.ageDataGridViewTextBoxColumn1.HeaderText = "Age";
             this.ageDataGridViewTextBoxColumn1.Name = "ageDataGridViewTextBoxColumn1";
             this.ageDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // registrationNumberDataGridViewTextBoxColumn
+            // 
+            this.registrationNumberDataGridViewTextBoxColumn.DataPropertyName = "RegistrationNumber";
+            this.registrationNumberDataGridViewTextBoxColumn.HeaderText = "Registration Number";
+            this.registrationNumberDataGridViewTextBoxColumn.Name = "registrationNumberDataGridViewTextBoxColumn";
+            this.registrationNumberDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // iDDataGridViewTextBoxColumn2
             // 
@@ -600,7 +609,7 @@ namespace WindowsFormsApp1.WUI {
             // MainForm
             // 
             this.BackColor = System.Drawing.SystemColors.Highlight;
-            this.ClientSize = new System.Drawing.Size(1464, 746);
+            this.ClientSize = new System.Drawing.Size(1842, 889);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label6);
@@ -682,11 +691,6 @@ namespace WindowsFormsApp1.WUI {
         private System.Windows.Forms.DataGridViewTextBoxColumn hoursDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn surnameDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn registrationNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ageDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn surnameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ageDataGridViewTextBoxColumn;
@@ -705,5 +709,10 @@ namespace WindowsFormsApp1.WUI {
         private System.Windows.Forms.DataGridViewTextBoxColumn courseIDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn professorIDDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button ctrlSaveChanges;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn surnameDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ageDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn registrationNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn2;
     }
 }
