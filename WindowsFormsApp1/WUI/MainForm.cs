@@ -30,15 +30,13 @@ namespace WindowsFormsApp1.WUI
         #region new code
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
+
 
 
 
             //initialize/load mock data to prof,student,course grids
             University.InitMockData();
-            ctrlProfessorList.DataSource = University.Professors;
-            ctrlStudentList.DataSource = University.Students;
-            ctrlCourseList.DataSource = University.Courses;
+            LoadDataToGrids();
 
             DeserializeFromJson();
             RefreshSchedule();
@@ -48,8 +46,12 @@ namespace WindowsFormsApp1.WUI
             // todo : load data on enter!
         }
 
-
-
+        private void LoadDataToGrids()
+        {
+            ctrlProfessorList.DataSource = University.Professors;
+            ctrlStudentList.DataSource = University.Students;
+            ctrlCourseList.DataSource = University.Courses;
+        }
 
         private void ctrlAddNewSchedule_Click(object sender, EventArgs e)
         {
@@ -180,7 +182,7 @@ namespace WindowsFormsApp1.WUI
         private void SerializeToJson()
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            string data = serializer.Serialize(University.ScheduledCourses);                //serialize only scedule data
+            string data = serializer.Serialize(University.ScheduledCourses);                //serialize only sceduledcourse data
             string path = Path.Combine(Environment.CurrentDirectory, _JsonFile);
             File.WriteAllText(path, data);
 
@@ -199,6 +201,7 @@ namespace WindowsFormsApp1.WUI
                     string data = File.ReadAllText(path);
 
                     University.ScheduledCourses = serializer.Deserialize<BindingList<Schedule>>(data);  //deserialize only schedule data
+                    
                 }
 
 
@@ -284,10 +287,14 @@ namespace WindowsFormsApp1.WUI
                 MessageBox.Show("Please select a schedule to  delete.");
                 return;
             }
-            var scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
+            if (MessageBox.Show("Do you really want to delete selected schedule?", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                var scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
 
-            University.DeleteScheduledCourse(scheduleID);
-            RefreshSchedule();
+                University.DeleteScheduledCourse(scheduleID);
+                RefreshSchedule();
+            }
+            
         }
 
         private void RefreshSchedule()
