@@ -260,7 +260,7 @@ namespace WindowsFormsApp1.WUI
 
 
 
-        public void ValidateProfessorCourseWithStudentCourse()
+        public void ValidateProfessorCourseWithStudentCourse(Guid professorID,Guid studentID)
         {
 
             //TODO: ???

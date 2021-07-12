@@ -34,7 +34,7 @@ namespace WindowsFormsApp1.Impl
                 Code = "01",
                 Subject = "Quantum Physics",
                 Category = CoursesCategoryEnum.Physics, // physics
-                Hours = 100
+                Hours = 2
             });
 
             Courses.Add(new Course()
@@ -43,7 +43,7 @@ namespace WindowsFormsApp1.Impl
                 Code = "02",
                 Subject = "Electo-Dynamics",
                 Category = CoursesCategoryEnum.Physics, // physics ?
-                Hours = 50
+                Hours = 2
             });
 
             Courses.Add(new Course()
@@ -52,7 +52,7 @@ namespace WindowsFormsApp1.Impl
                 Code = "03",
                 Subject = "Basic Chemistry",
                 Category = CoursesCategoryEnum.Chemistry,  // Chemistry
-                Hours = 50
+                Hours = 2
             });
 
             Courses.Add(new Course()
@@ -61,7 +61,7 @@ namespace WindowsFormsApp1.Impl
                 Code = "04",
                 Subject = "Financial II",
                 Category = CoursesCategoryEnum.Financial,  // Financial
-                Hours = 50
+                Hours = 2
             });
 
             Courses.Add(new Course()
@@ -70,7 +70,7 @@ namespace WindowsFormsApp1.Impl
                 Code = "05",
                 Subject = "Mathematics I",
                 Category = CoursesCategoryEnum.Mathematics,
-                Hours = 50
+                Hours = 2
             });
 
 
@@ -91,10 +91,47 @@ namespace WindowsFormsApp1.Impl
             {
                 Name = "Giwrgos",
                 Surname = "Papadopoulos",
-                Age = 22,
+                Age = 24,
                 RegistrationNumber = 1235,
                 AttendingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.CivilEngineering, CoursesCategoryEnum.Mathematics }
             });
+
+            Students.Add(new Student()
+            {
+                Name = "Alexandra",
+                Surname = "Sionti",
+                Age = 24,
+                RegistrationNumber = 1236,
+                AttendingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Physics, CoursesCategoryEnum.Sociology }
+            });
+
+            Students.Add(new Student()
+            {
+                Name = "Angelos",
+                Surname = "Renginas",
+                Age = 24,
+                RegistrationNumber = 1237,
+                AttendingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Financial, CoursesCategoryEnum.Chemistry }
+            });
+
+            Students.Add(new Student()
+            {
+                Name = "Alexandros",
+                Surname = "Papazoglou",
+                Age = 24,
+                RegistrationNumber = 1238,
+                AttendingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Mathematics, CoursesCategoryEnum.Sociology }
+            });
+
+            Students.Add(new Student()
+            {
+                Name = "Dorothea",
+                Surname = "Sarri",
+                Age = 24,
+                RegistrationNumber = 1239,
+                AttendingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Physics, CoursesCategoryEnum.Chemistry }
+            });
+
 
 
 
@@ -118,7 +155,7 @@ namespace WindowsFormsApp1.Impl
             Professors.Add(new Professor()
             {
                 Name = "Stavros",
-                Surname = "Kassidis",
+                Surname = "Kasidis",
                 Age = 30,
                 Rank = "Senior",
                 TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.CivilEngineering, CoursesCategoryEnum.Mathematics }

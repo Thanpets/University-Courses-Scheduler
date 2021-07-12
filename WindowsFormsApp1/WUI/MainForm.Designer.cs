@@ -59,6 +59,7 @@ namespace WindowsFormsApp1.WUI {
             this.scheduleCourseTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.scheduleDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TeachingCourses = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AttendingCourses = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.studentIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.courseIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,6 +71,11 @@ namespace WindowsFormsApp1.WUI {
             this.codeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iDDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.courseBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.surnameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ageDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.registrationNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iDDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.studentBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.surnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -77,12 +83,6 @@ namespace WindowsFormsApp1.WUI {
             this.rankDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.professorBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.surnameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ageDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.registrationNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.iDDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AttendingCourses = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ctrlCourseGrid)).BeginInit();
@@ -310,7 +310,7 @@ namespace WindowsFormsApp1.WUI {
             this.ctrlStudentGrid.Name = "ctrlStudentGrid";
             this.ctrlStudentGrid.ReadOnly = true;
             this.ctrlStudentGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ctrlStudentGrid.Size = new System.Drawing.Size(485, 189);
+            this.ctrlStudentGrid.Size = new System.Drawing.Size(483, 189);
             this.ctrlStudentGrid.TabIndex = 13;
             // 
             // ctrlProfessorGrid
@@ -355,7 +355,7 @@ namespace WindowsFormsApp1.WUI {
             this.courseIDDataGridViewTextBoxColumn,
             this.professorIDDataGridViewTextBoxColumn});
             this.crtlScheduleGrid.DataSource = this.scheduleBindingSource;
-            this.crtlScheduleGrid.Location = new System.Drawing.Point(175, 49);
+            this.crtlScheduleGrid.Location = new System.Drawing.Point(197, 53);
             this.crtlScheduleGrid.Name = "crtlScheduleGrid";
             this.crtlScheduleGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.crtlScheduleGrid.Size = new System.Drawing.Size(743, 246);
@@ -377,7 +377,7 @@ namespace WindowsFormsApp1.WUI {
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(488, 17);
+            this.label14.Location = new System.Drawing.Point(510, 21);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(100, 24);
             this.label14.TabIndex = 21;
@@ -386,7 +386,7 @@ namespace WindowsFormsApp1.WUI {
             // ctrlDeleteSchedule
             // 
             this.ctrlDeleteSchedule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ctrlDeleteSchedule.Location = new System.Drawing.Point(989, 49);
+            this.ctrlDeleteSchedule.Location = new System.Drawing.Point(1011, 53);
             this.ctrlDeleteSchedule.Name = "ctrlDeleteSchedule";
             this.ctrlDeleteSchedule.Size = new System.Drawing.Size(239, 56);
             this.ctrlDeleteSchedule.TabIndex = 20;
@@ -397,7 +397,7 @@ namespace WindowsFormsApp1.WUI {
             // ctrlSaveChanges
             // 
             this.ctrlSaveChanges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ctrlSaveChanges.Location = new System.Drawing.Point(989, 239);
+            this.ctrlSaveChanges.Location = new System.Drawing.Point(1011, 243);
             this.ctrlSaveChanges.Name = "ctrlSaveChanges";
             this.ctrlSaveChanges.Size = new System.Drawing.Size(239, 56);
             this.ctrlSaveChanges.TabIndex = 22;
@@ -467,6 +467,14 @@ namespace WindowsFormsApp1.WUI {
             this.TeachingCourses.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.TeachingCourses.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.TeachingCourses.Width = 150;
+            // 
+            // AttendingCourses
+            // 
+            this.AttendingCourses.DataPropertyName = "AttendingCoursesString";
+            this.AttendingCourses.HeaderText = "Attending Courses";
+            this.AttendingCourses.Name = "AttendingCourses";
+            this.AttendingCourses.ReadOnly = true;
+            this.AttendingCourses.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // iDDataGridViewTextBoxColumn1
             // 
@@ -546,6 +554,43 @@ namespace WindowsFormsApp1.WUI {
             // 
             this.courseBindingSource.DataSource = typeof(WindowsFormsApp1.Impl.Course);
             // 
+            // nameDataGridViewTextBoxColumn1
+            // 
+            this.nameDataGridViewTextBoxColumn1.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
+            this.nameDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // surnameDataGridViewTextBoxColumn1
+            // 
+            this.surnameDataGridViewTextBoxColumn1.DataPropertyName = "Surname";
+            this.surnameDataGridViewTextBoxColumn1.HeaderText = "Surname";
+            this.surnameDataGridViewTextBoxColumn1.Name = "surnameDataGridViewTextBoxColumn1";
+            this.surnameDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // ageDataGridViewTextBoxColumn1
+            // 
+            this.ageDataGridViewTextBoxColumn1.DataPropertyName = "Age";
+            this.ageDataGridViewTextBoxColumn1.HeaderText = "Age";
+            this.ageDataGridViewTextBoxColumn1.Name = "ageDataGridViewTextBoxColumn1";
+            this.ageDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.ageDataGridViewTextBoxColumn1.Width = 40;
+            // 
+            // registrationNumberDataGridViewTextBoxColumn
+            // 
+            this.registrationNumberDataGridViewTextBoxColumn.DataPropertyName = "RegistrationNumber";
+            this.registrationNumberDataGridViewTextBoxColumn.HeaderText = "Registration Number";
+            this.registrationNumberDataGridViewTextBoxColumn.Name = "registrationNumberDataGridViewTextBoxColumn";
+            this.registrationNumberDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // iDDataGridViewTextBoxColumn2
+            // 
+            this.iDDataGridViewTextBoxColumn2.DataPropertyName = "ID";
+            this.iDDataGridViewTextBoxColumn2.HeaderText = "ID";
+            this.iDDataGridViewTextBoxColumn2.Name = "iDDataGridViewTextBoxColumn2";
+            this.iDDataGridViewTextBoxColumn2.ReadOnly = true;
+            this.iDDataGridViewTextBoxColumn2.Visible = false;
+            // 
             // studentBindingSource
             // 
             this.studentBindingSource.DataSource = typeof(WindowsFormsApp1.Impl.Student);
@@ -592,51 +637,6 @@ namespace WindowsFormsApp1.WUI {
             // professorBindingSource
             // 
             this.professorBindingSource.DataSource = typeof(WindowsFormsApp1.Impl.Professor);
-            // 
-            // nameDataGridViewTextBoxColumn1
-            // 
-            this.nameDataGridViewTextBoxColumn1.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn1.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
-            this.nameDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // surnameDataGridViewTextBoxColumn1
-            // 
-            this.surnameDataGridViewTextBoxColumn1.DataPropertyName = "Surname";
-            this.surnameDataGridViewTextBoxColumn1.HeaderText = "Surname";
-            this.surnameDataGridViewTextBoxColumn1.Name = "surnameDataGridViewTextBoxColumn1";
-            this.surnameDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // ageDataGridViewTextBoxColumn1
-            // 
-            this.ageDataGridViewTextBoxColumn1.DataPropertyName = "Age";
-            this.ageDataGridViewTextBoxColumn1.HeaderText = "Age";
-            this.ageDataGridViewTextBoxColumn1.Name = "ageDataGridViewTextBoxColumn1";
-            this.ageDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.ageDataGridViewTextBoxColumn1.Width = 40;
-            // 
-            // registrationNumberDataGridViewTextBoxColumn
-            // 
-            this.registrationNumberDataGridViewTextBoxColumn.DataPropertyName = "RegistrationNumber";
-            this.registrationNumberDataGridViewTextBoxColumn.HeaderText = "Registration Number";
-            this.registrationNumberDataGridViewTextBoxColumn.Name = "registrationNumberDataGridViewTextBoxColumn";
-            this.registrationNumberDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // iDDataGridViewTextBoxColumn2
-            // 
-            this.iDDataGridViewTextBoxColumn2.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn2.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn2.Name = "iDDataGridViewTextBoxColumn2";
-            this.iDDataGridViewTextBoxColumn2.ReadOnly = true;
-            this.iDDataGridViewTextBoxColumn2.Visible = false;
-            // 
-            // AttendingCourses
-            // 
-            this.AttendingCourses.DataPropertyName = "AttendingCoursesString";
-            this.AttendingCourses.HeaderText = "Attending Courses";
-            this.AttendingCourses.Name = "AttendingCourses";
-            this.AttendingCourses.ReadOnly = true;
-            this.AttendingCourses.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
             // MainForm
             // 
