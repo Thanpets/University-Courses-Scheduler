@@ -46,12 +46,7 @@ namespace WindowsFormsApp1.WUI
             // todo : load data on enter!
         }
 
-        private void LoadDataToGrids()
-        {
-            ctrlProfessorList.DataSource = University.Professors;
-            ctrlStudentList.DataSource = University.Students;
-            ctrlCourseList.DataSource = University.Courses;
-        }
+       
 
         private void ctrlAddNewSchedule_Click(object sender, EventArgs e)
         {
@@ -100,6 +95,105 @@ namespace WindowsFormsApp1.WUI
 
 
         }
+        
+
+        private void ctrlUpdateSelected_Click(object sender, EventArgs e)
+        {
+            var selectedSchedule = crtlScheduleGrid.SelectedRows;
+            if (University.ScheduledCourses.Count < 1 || selectedSchedule.Count == 0)
+            {
+                MessageBox.Show("Please select a schedule to update");
+                return;
+            }
+
+            GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
+
+            if (string.IsNullOrEmpty(courseTime))
+            {
+                MessageBox.Show("Please pick a Course Time before updating selected schedule");
+                return;
+            }
+
+            if (ValidateStudentCourses(calendar, studentID) == false)
+            {
+                return;
+            }
+            if (ValidateProfessorCourses(calendar, professorID) == false)
+            {
+                return;
+            }
+
+
+
+
+            if (ValidateStudentAvailability(courseTime, calendar, studentID) == false)
+            {
+                return;
+            }
+            if (ValidateProfessorAvailability(courseTime, calendar, professorID) == false)
+            {
+                return;
+            }
+
+
+
+            University.UpdateScheduledCourse(scheduleID, courseID, professorID, studentID, calendar.Date, courseTime);
+
+            RefreshSchedule();
+
+
+        }
+
+
+
+        private void ctrlDeleteSchedule_Click(object sender, EventArgs e)
+        {
+
+
+            if (University.ScheduledCourses.Count < 1)
+            {
+                MessageBox.Show("No selected schedule found to delete.");
+                return;
+            }
+            var selectedSchedule = crtlScheduleGrid.SelectedRows;
+            if (selectedSchedule.Count == 0)
+            {
+                MessageBox.Show("Please select a schedule to  delete.");
+                return;
+            }
+            if (MessageBox.Show("Do you really want to delete selected schedule?", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                var scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
+
+                University.DeleteScheduledCourse(scheduleID);
+                RefreshSchedule();
+            }
+
+        }
+        private void ctrlExitApplication_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you really want to exit? Any unsaved changes will be lost", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+
+        }
+        private void ctrlSaveChanges_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you really want to save all changes to schedules?", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                SerializeToJson();
+            }
+        }
+
+        private void ctrlMenuSaveChanges_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you really want to save all changes to schedules?", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                SerializeToJson();
+            }
+
+        }
 
         public bool ValidateProfessorCourses(DateTime calendar, Guid professorID)
         {
@@ -107,14 +201,14 @@ namespace WindowsFormsApp1.WUI
             var professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
             var countDailyCourses = professorSchedule.Count(x => x.Date == calendar.Date);
 
-            if (countDailyCourses >= 4)
+            if (countDailyCourses >= 4) // && scheduleID == Guid.Empty
             {
                 MessageBox.Show("Selected Professor already scheduled to 4 courses in this day");
                 return false;
             }
             return true;
         }
-
+        
 
         public bool ValidateStudentCourses(DateTime calendar, Guid studentID)
         {
@@ -174,7 +268,7 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-        #endregion
+       
 
 
 
@@ -200,7 +294,7 @@ namespace WindowsFormsApp1.WUI
                 {
                     string data = File.ReadAllText(path);
 
-                    University.ScheduledCourses = serializer.Deserialize<BindingList<Schedule>>(data);  //deserialize only schedule data
+                    University.ScheduledCourses = serializer.Deserialize<BindingList<Schedule>>(data);  //deserialize only scheduledcourse data
                     
                 }
 
@@ -214,101 +308,55 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-        private void ctrlExitApplication_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Do you really want to exit? Any unsaved changes will be lost", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-           
-        }
-
-        private void ctrlUpdateSelected_Click(object sender, EventArgs e)
-        {
-            var selectedSchedule = ctrlScheduleList.SelectedRows;
-            if (University.ScheduledCourses.Count < 1 || selectedSchedule.Count == 0)
-            {
-                MessageBox.Show("Please select a schedule to update");
-                return;
-            }
-
-            GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
-
-            if (string.IsNullOrEmpty(courseTime))
-            {
-                MessageBox.Show("Please pick a Course Time before adding a new schedule");
-                return;
-            }
-
-            if (ValidateStudentCourses(calendar, studentID) == false)
-            {
-                return;
-            }
-            if (ValidateProfessorCourses(calendar, professorID) == false)
-            {
-                return;
-            }
-
-
-
-
-            if (ValidateStudentAvailability(courseTime, calendar, studentID) == false)
-            {
-                return;
-            }
-            if (ValidateProfessorAvailability(courseTime, calendar, professorID) == false)
-            {
-                return;
-            }
-
-            
-
-            University.UpdateScheduledCourse(scheduleID, courseID, professorID, studentID, calendar.Date, courseTime);
-
-            RefreshSchedule();
-
-
-        }
-
-
-
-        private void ctrlDeleteSchedule_Click(object sender, EventArgs e)
-        {
-
-
-            if (University.ScheduledCourses.Count < 1)
-            {
-                MessageBox.Show("No selected schedule found to delete.");
-                return;
-            }
-            var selectedSchedule = ctrlScheduleList.SelectedRows;
-            if (selectedSchedule.Count == 0)
-            {
-                MessageBox.Show("Please select a schedule to  delete.");
-                return;
-            }
-            if (MessageBox.Show("Do you really want to delete selected schedule?", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                var scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
-
-                University.DeleteScheduledCourse(scheduleID);
-                RefreshSchedule();
-            }
-            
-        }
+       
 
         private void RefreshSchedule()
         {
 
-            ctrlScheduleList.DataSource = University.ScheduledCourses;
-            ctrlScheduleList.Refresh();
+            crtlScheduleGrid.DataSource = University.ScheduledCourses;
+            crtlScheduleGrid.Refresh();
+        }
+         private void LoadDataToGrids()
+        {
+            ctrlProfessorGrid.DataSource = University.Professors;
+            ctrlStudentGrid.DataSource = University.Students;
+            ctrlCourseGrid.DataSource = University.Courses;
+
+
+            //providing enums category as combobox
+            var professorRows = ctrlProfessorGrid.Rows;
+
+            foreach (DataGridViewRow row in professorRows)
+            {
+                List<string> comboBoxvalues = University.Professors.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).TeachingCourses.Select(x => x.ToString()).ToList();
+                //var comboBoxvalues = new List<string>();
+
+                //University.Professors.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).TeachingCourses.ForEach(s => comboBoxvalues.Add(s.ToString()));
+
+                (row.Cells[5] as DataGridViewComboBoxCell).DataSource = comboBoxvalues;
+            }
+
+            var studentRows = ctrlStudentGrid.Rows;
+
+            foreach (DataGridViewRow row in studentRows)
+            {
+                List<string> comboBoxvalues = University.Students.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).AttendingCourses.Select(x => x.ToString()).ToList();
+                //var comboBoxvalues = new List<string>();
+
+                //University.Students.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).AttendingCourses.ForEach(s => comboBoxvalues.Add(s.ToString()));
+
+                (row.Cells[5] as DataGridViewComboBoxCell).DataSource = comboBoxvalues;
+            }
+
+
+
         }
 
         private void GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime date, out string courseTime)
         {
-            DataGridViewSelectedRowCollection selectedProfessor = ctrlProfessorList.SelectedRows;
-            DataGridViewSelectedRowCollection selectedCourse = ctrlCourseList.SelectedRows;
-            DataGridViewSelectedRowCollection selectedStudent = ctrlStudentList.SelectedRows;
+            DataGridViewSelectedRowCollection selectedProfessor = ctrlProfessorGrid.SelectedRows;
+            DataGridViewSelectedRowCollection selectedCourse = ctrlCourseGrid.SelectedRows;
+            DataGridViewSelectedRowCollection selectedStudent = ctrlStudentGrid.SelectedRows;
             //getting selected IDS
             professorID = (Guid)selectedProfessor[0].Cells[4].Value;
             studentID = (Guid)selectedStudent[0].Cells[4].Value;
@@ -319,21 +367,23 @@ namespace WindowsFormsApp1.WUI
             date = ctrlDatePicker.Value;
 
             courseTime = ctrlCourseHours.Text;
+
+            
         }
 
         private void GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime date, out string courseTime)
         {
             //overload method with scheduleid
-            DataGridViewSelectedRowCollection selectedProfessor = ctrlProfessorList.SelectedRows;
-            DataGridViewSelectedRowCollection selectedCourse = ctrlCourseList.SelectedRows;
-            DataGridViewSelectedRowCollection selectedStudent = ctrlStudentList.SelectedRows;
+            DataGridViewSelectedRowCollection selectedProfessor = ctrlProfessorGrid.SelectedRows;
+            DataGridViewSelectedRowCollection selectedCourse = ctrlCourseGrid.SelectedRows;
+            DataGridViewSelectedRowCollection selectedStudent = ctrlStudentGrid.SelectedRows;
             //getting selected IDS
-            professorID = (Guid)selectedProfessor[0].Cells[4].Value;
+            professorID = (Guid)selectedProfessor[0].Cells[4].Value;                 //cannot get cells.{"ID"} because ID column is hidden
             studentID = (Guid)selectedStudent[0].Cells[4].Value;
             courseID = (Guid)selectedCourse[0].Cells[4].Value;
 
 
-            var selectedSchedule = ctrlScheduleList.SelectedRows;    //schedule id 
+            var selectedSchedule = crtlScheduleGrid.SelectedRows;    //schedule id 
 
             scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
 
@@ -345,22 +395,9 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-        private void ctrlSaveChanges_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Do you really want to save all changes to schedules?", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                SerializeToJson();
-            }
-        }
+        
 
-        private void ctrlMenuSaveChanges_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Do you really want to save all changes to schedules?","Message",MessageBoxButtons.YesNo)==DialogResult.Yes)
-            {
-                SerializeToJson();
-            }
-           
-        }
+        #endregion
     }
 }
 

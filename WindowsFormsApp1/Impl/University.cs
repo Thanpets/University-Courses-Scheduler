@@ -103,19 +103,43 @@ namespace WindowsFormsApp1.Impl
 
             Professors.Add(new Professor()
             {
-                Name = "Maria",
-                Surname = "Papadopoulou",
-                Age = 42,
-                Rank = "1",
+                Name = "Dimitris",
+                Surname = "Raptodimos",
+                Age = 30,
+                Rank = "Senior",
                 TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Physics, CoursesCategoryEnum.Mathematics }
             });
             Professors.Add(new Professor()
             {
                 Name = "Fotis",
                 Surname = "Chrysoulas",
-                Age = 35,
+                Age = 30,
                 Rank = "Senior",
-                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Physics, CoursesCategoryEnum.Mathematics }
+                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Chemistry, CoursesCategoryEnum.Physics }
+            });
+            Professors.Add(new Professor()
+            {
+                Name = "Stavros",
+                Surname = "Kassidis",
+                Age = 30,
+                Rank = "Senior",
+                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.CivilEngineering, CoursesCategoryEnum.Mathematics }
+            });
+            Professors.Add(new Professor()
+            {
+                Name = "Thodoris",
+                Surname = "Kapiris",
+                Age = 30,
+                Rank = "Senior",
+                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.Sociology, CoursesCategoryEnum.Financial }
+            });
+            Professors.Add(new Professor()
+            {
+                Name = "Argurhs",
+                Surname = "Roussos",
+                Age = 30,
+                Rank = "Senior",
+                TeachingCourses = new List<CoursesCategoryEnum>() { CoursesCategoryEnum.CivilEngineering, CoursesCategoryEnum.Sociology }
             });
         }
 
