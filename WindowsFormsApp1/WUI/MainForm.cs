@@ -23,7 +23,7 @@ namespace WindowsFormsApp1.WUI
         }
 
         #region old code
-        
+
         #endregion
 
         #region new code
@@ -36,8 +36,8 @@ namespace WindowsFormsApp1.WUI
             //load mock data to prof,student,course grids
             University.LoadMockData();
             ctrlProfessorList.DataSource = University.Professors;
-            crtlStudentList.DataSource = University.Students;
-            crtlCourseList.DataSource = University.Courses;
+            ctrlStudentList.DataSource = University.Students;
+            ctrlCourseList.DataSource = University.Courses;
 
 
 
@@ -47,24 +47,10 @@ namespace WindowsFormsApp1.WUI
 
 
 
-        private void crtlAddNewSchedule_Click(object sender, EventArgs e)
+        private void ctrlAddNewSchedule_Click(object sender, EventArgs e)
         {
 
-
-
-            DataGridViewSelectedRowCollection selectedProfessorItem = ctrlProfessorList.SelectedRows;
-            DataGridViewSelectedRowCollection selectedCourseItem = crtlCourseList.SelectedRows;
-            DataGridViewSelectedRowCollection selectedStudentItem = crtlStudentList.SelectedRows;
-            //getting selected IDS
-            var professorID = (Guid)selectedProfessorItem[0].Cells[4].Value;
-            var studentID = (Guid)selectedStudentItem[0].Cells[4].Value;
-            var courseID = (Guid)selectedCourseItem[0].Cells[4].Value;
-
-            crtlDatePicker.CustomFormat = "dd/MM/yyyy";
-
-            DateTime calendar = crtlDatePicker.Value;
-
-            string courseTime = ctrlCourseHours.Text;
+            GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
             if (string.IsNullOrEmpty(courseTime))
             {
@@ -72,16 +58,16 @@ namespace WindowsFormsApp1.WUI
                 return;
             }
 
-            if (ValidateStudentCourses(calendar,studentID) == false)
+            if (ValidateStudentCourses(calendar, studentID) == false)
             {
                 return;
             }
-            if (ValidateProfessorCourses(calendar,professorID) == false)
+            if (ValidateProfessorCourses(calendar, professorID) == false)
             {
                 return;
             }
 
-            
+
 
 
             if (ValidateStudentAvailability(courseTime, calendar, studentID) == false)
@@ -100,7 +86,7 @@ namespace WindowsFormsApp1.WUI
 
             University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, courseTime); //adding new scheduledcourse
 
-            crtlScheduleList.DataSource = University.ScheduledCourses;  //showing data to scheduleGrid
+            RefreshSchedule();  //showing data to scheduleGrid
 
 
             // TODO: 1. CANNOT ADD SAME STUDENT + PROFESSOR IN SAME DATE & HOUR
@@ -113,12 +99,13 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-        public bool ValidateProfessorCourses(DateTime calendar,Guid professorID)
+        public bool ValidateProfessorCourses(DateTime calendar, Guid professorID)
         {
+            // validates if professor is not occupied with another course at time.
             var professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
-            var countDailyLessons = professorSchedule.Count(x => x.Date == calendar.Date);
+            var countDailyCourses = professorSchedule.Count(x => x.Date == calendar.Date);
 
-            if (countDailyLessons >= 4)
+            if (countDailyCourses >= 4)
             {
                 MessageBox.Show("Selected Professor already scheduled to 4 courses in this day");
                 return false;
@@ -127,7 +114,7 @@ namespace WindowsFormsApp1.WUI
         }
 
 
-        public bool ValidateStudentCourses(DateTime calendar,Guid studentID)
+        public bool ValidateStudentCourses(DateTime calendar, Guid studentID)
         {
             //Validates if student is signed to 3 lessons in selected day/date
             var studentSchedule = University.ScheduledCourses.Where(x => x.StudentID == studentID);
@@ -142,7 +129,7 @@ namespace WindowsFormsApp1.WUI
         }
         public bool ValidateStudentAvailability(string courseTime, DateTime calendar, Guid studentID)
         {
-            //validates if student is not occupied with another lesson at time.
+            //validates if student is not occupied with another course at time.
             IEnumerable<Schedule> studentSchedule = University.ScheduledCourses.Where(x => x.StudentID == studentID);
             foreach (Schedule schedule in studentSchedule)
             {
@@ -187,55 +174,9 @@ namespace WindowsFormsApp1.WUI
 
         #endregion
 
-        private void button11_Click(object sender, EventArgs e)
-        {
 
 
 
-            //University.LoadMockData();
-
-            //foreach (Student item in University.Students) {
-            //    crtlCourseList.Items.Add($"{item.Name} {item.Surname}");
-            //}
-
-            //foreach (Course course in University.Courses) {
-            //    crtlProfessorList.Items.Add(course.Code + "--" + course.Subject);
-            //}
-
-
-            //foreach (Professor cc1 in University.Professors) {
-
-            //    crtlStudentList.Items.Add(string.Format("{0}  {1}", cc1.Name, cc1.Surname));
-            //}
-
-            //should run only once!
-            //button11.Hide();
-        }
-
-        private void addToScheduleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            // todo : display on a grid??
-
-            // todo: add exception handling?
-            //University.Schedules.Add(new Schedule() { 
-            //    Course = crtlProfessorList.SelectedItem.ToString(),
-            //    Student = crtlCourseList.SelectedItem.ToString(),
-            //    Professor = crtlStudentList.SelectedItem.ToString(), 
-            //    Calendar = dateTimePicker2.Value });
-
-            //ctrlSchedule.Items.Clear();
-            //foreach (Schedule schedule in University.ScheduledCourses) {
-
-            //    ctrlSchedule.Items.Add(
-            //        schedule.Calendar + " " + 
-            //        schedule.Courses + " " + 
-            //        schedule.Students + " " + 
-            //        schedule.Professors);
-
-            //}
-
-        }
         private void SerializeToJson()
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -248,13 +189,90 @@ namespace WindowsFormsApp1.WUI
 
 
 
-        
 
-        
 
-        private void crtlExitApplication_Click(object sender, EventArgs e)
+
+
+        private void ctrlExitApplication_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void ctrlUpdateSelected_Click(object sender, EventArgs e)
+        {
+            
+            if (University.ScheduledCourses.Count < 1)
+            {
+                MessageBox.Show("Please select a schedule to update");
+                return;
+            }
+            GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
+            University.UpdateScheduledCourse(scheduleID, courseID, professorID, studentID, calendar.Date, courseTime);
+            
+            RefreshSchedule();
+
+
+        }
+
+
+
+        private void ctrlDeleteSchedule_Click(object sender, EventArgs e)
+        {
+
+
+            if (University.ScheduledCourses.Count < 1)
+            {
+                MessageBox.Show("No selected schedule found to delete.");
+                return;
+            }
+            var selectedSchedule = ctrlScheduleList.SelectedRows;
+            var scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
+            University.DeleteScheduledCourse(scheduleID);
+        }
+
+        private void RefreshSchedule()
+        {
+            
+            ctrlScheduleList.DataSource = University.ScheduledCourses;
+        }
+
+        private void GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime date, out string courseTime)
+        {
+            DataGridViewSelectedRowCollection selectedProfessor = ctrlProfessorList.SelectedRows;
+            DataGridViewSelectedRowCollection selectedCourse = ctrlCourseList.SelectedRows;
+            DataGridViewSelectedRowCollection selectedStudent = ctrlStudentList.SelectedRows;
+            //getting selected IDS
+            professorID = (Guid)selectedProfessor[0].Cells[4].Value;
+            studentID = (Guid)selectedStudent[0].Cells[4].Value;
+            courseID = (Guid)selectedCourse[0].Cells[4].Value;
+
+            ctrlDatePicker.CustomFormat = "dd/MM/yyyy";  //change format to remove hour from calendar
+
+            date = ctrlDatePicker.Value;
+
+            courseTime = ctrlCourseHours.Text;
+        }
+
+        private void GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime date, out string courseTime)
+        {
+            //overload method with scheduleid
+            DataGridViewSelectedRowCollection selectedProfessor = ctrlProfessorList.SelectedRows;
+            DataGridViewSelectedRowCollection selectedCourse = ctrlCourseList.SelectedRows;
+            DataGridViewSelectedRowCollection selectedStudent = ctrlStudentList.SelectedRows;
+            //getting selected IDS
+            professorID = (Guid)selectedProfessor[0].Cells[4].Value;
+            studentID = (Guid)selectedStudent[0].Cells[4].Value;
+            courseID = (Guid)selectedCourse[0].Cells[4].Value;
+
+            
+            var selectedSchedule = ctrlScheduleList.SelectedRows;    //schedule id 
+            scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
+
+            ctrlDatePicker.CustomFormat = "dd/MM/yyyy";  //change format to remove hour from calendar
+
+            date = ctrlDatePicker.Value;
+
+            courseTime = ctrlCourseHours.Text;
         }
     }
 }
