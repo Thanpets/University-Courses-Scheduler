@@ -54,51 +54,21 @@ namespace WindowsFormsApp1.WUI
 
             GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
-            if (string.IsNullOrEmpty(courseTime))
-            {
-                MessageBox.Show("Please pick a Course Time before adding a new schedule");
-                return;
-            }
-            if (ValidateWeekend(calendar) == false)
+            if (ScheduleValidations(calendar, professorID, studentID, courseTime) == false)
             {
                 return;
             }
-
-            if (ValidateStudentCourses(calendar, studentID) == false)
+            else
             {
-                return;
+                University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, courseTime);
+                RefreshSchedule();
             }
-            if (ValidateProfessorCourses(calendar, professorID) == false)
-            {
-                return;
-            }
-
-
-
-
-            if (ValidateStudentAvailability(courseTime, calendar, studentID) == false)
-            {
-                return;
-            }
-            if (ValidateProfessorAvailability(courseTime, calendar, professorID) == false)
-            {
-                return;
-            }
-
-
-
-            University.AddScheduledCourse(courseID, professorID, studentID, calendar.Date, courseTime);
-            RefreshSchedule();
-
 
             // TODO: 1. CANNOT ADD SAME STUDENT + PROFESSOR IN SAME DATE & HOUR
 
             // TODO: 2. EACH STUDENT CANNOT HAVE MORE THAN 3 COURSES PER DAY!
 
             // TODO: 3. A PROFESSOR CANNOT TEACH MORE THAN 4 COURSES PER DAY AND 40 COURSES PER WEEK
-
-
-
         }
 
 
@@ -113,42 +83,18 @@ namespace WindowsFormsApp1.WUI
 
             GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
-            if (string.IsNullOrEmpty(courseTime))
-            {
-                MessageBox.Show("Please pick a Course Time before updating selected schedule");
-                return;
-            }
-            if (ValidateWeekend(calendar) == false)
+            if (ScheduleValidations(calendar, professorID, studentID, courseTime) == false)
             {
                 return;
             }
+            else
+            {
+                University.UpdateScheduledCourse(scheduleID, courseID, professorID, studentID, calendar.Date, courseTime);
 
-            if (ValidateStudentCourses(calendar, studentID) == false)
-            {
-                return;
-            }
-            if (ValidateProfessorCourses(calendar, professorID) == false)
-            {
-                return;
+                RefreshSchedule();
             }
 
 
-
-
-            if (ValidateStudentAvailability(courseTime, calendar, studentID) == false)
-            {
-                return;
-            }
-            if (ValidateProfessorAvailability(courseTime, calendar, professorID) == false)
-            {
-                return;
-            }
-
-
-
-            University.UpdateScheduledCourse(scheduleID, courseID, professorID, studentID, calendar.Date, courseTime);
-
-            RefreshSchedule();
 
 
         }
@@ -204,13 +150,54 @@ namespace WindowsFormsApp1.WUI
 
         }
 
+        private bool ScheduleValidations(DateTime calendar, Guid professorID, Guid studentID, string courseTime)
+        {
+            if (string.IsNullOrEmpty(courseTime))
+            {
+                MessageBox.Show("Please pick a Course Time before updating selected schedule");
+                return false;
+            }
+            if (ValidateWeekend(calendar) == false)
+            {
+                return false;
+            }
+
+            if (ValidateStudentCourses(calendar, studentID) == false)
+            {
+                return false;
+            }
+            if (ValidateProfessorCourses(calendar, professorID) == false)
+            {
+                return false;
+            }
+            if (ValidateStudentAvailability(courseTime, calendar, studentID) == false)
+            {
+                return false;
+            }
+            if (ValidateProfessorAvailability(courseTime, calendar, professorID) == false)
+            {
+                return false;
+            }
+            return true;
+
+        }
+        private bool ValidateWeekend(DateTime calendar)
+        {
+            if (calendar.Date.DayOfWeek == DayOfWeek.Saturday || calendar.Date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                MessageBox.Show("Get a life ....");
+                return false;
+            }
+            return true;
+        }
+
         public bool ValidateProfessorCourses(DateTime calendar, Guid professorID)
         {
             // validates if professor is not occupied with another course at time.
             var professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
             var countDailyCourses = professorSchedule.Count(x => x.Date.Date == calendar.Date);
 
-            if (countDailyCourses >= 4) // && scheduleID == Guid.Empty
+            if (countDailyCourses >= 4) 
             {
                 MessageBox.Show("Selected Professor already scheduled to 4 courses in this day");
                 return false;
@@ -269,19 +256,12 @@ namespace WindowsFormsApp1.WUI
 
 
 
-        private bool ValidateWeekend(DateTime calendar)
-        {
-            if (calendar.Date.DayOfWeek == DayOfWeek.Saturday || calendar.Date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                MessageBox.Show("Get a life ....");
-                return false;
-            }
-            return true;
-        }
+
         private void ValidateProfessorCourseWithStudentCourse(Guid professorID, Guid studentID)
         {
 
             //TODO: ???
+
 
         }
 
