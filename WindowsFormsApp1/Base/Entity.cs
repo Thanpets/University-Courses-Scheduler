@@ -8,7 +8,7 @@ namespace WindowsFormsApp1.Base
 {
     public class Entity
     {
-        public Guid ID { get; private set; }
+        public Guid ID { get; set; }
 
         public Entity()
         {

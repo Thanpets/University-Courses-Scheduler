@@ -12,9 +12,9 @@ namespace WindowsFormsApp1.Impl
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Age { get; set; }
-        public string Rank { get; set; }    
-        public List<CoursesCategoryEnum> TeachingCourses { get; set; }
+        public string Rank { get; set; }
+        public List<CoursesCategoryEnum> TeachingCourses { get; set; } = new List<CoursesCategoryEnum>();
 
-        
+        public string TeachingCoursesString => String.Join(",",TeachingCourses.Select(x => x.ToString()));
     }
 }

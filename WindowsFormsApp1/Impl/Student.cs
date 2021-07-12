@@ -14,6 +14,8 @@ namespace WindowsFormsApp1.Impl
         public int RegistrationNumber { get; set; }
         public int Age { get; set; }
         public List<CoursesCategoryEnum> AttendingCourses { get; set; }
-        
+
+        public string AttendingCoursesString => String.Join(",", AttendingCourses.Select(x => x.ToString()));
+
     }
 }

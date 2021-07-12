@@ -25,8 +25,6 @@ namespace WindowsFormsApp1.Impl
             ScheduledCourses = new BindingList<Schedule>();
         }
 
-
-
         public void InitMockData()
         {
             // TODO: MUST IMPLEMENT ENUMERATION FOR CATEGORY ?
@@ -143,8 +141,6 @@ namespace WindowsFormsApp1.Impl
             });
         }
 
-
-
         public void AddScheduledCourse(Guid courseID, Guid professorID, Guid studentID, DateTime date, string courseTime)
         {
 
@@ -204,9 +200,6 @@ namespace WindowsFormsApp1.Impl
             schedule.StudentSurname = studentSurname;
             schedule.CourseSubject = courseSubject;
             schedule.CourseTime = courseTime;
-            
-
-
         }
     }
 }

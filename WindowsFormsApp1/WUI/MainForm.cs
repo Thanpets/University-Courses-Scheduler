@@ -31,18 +31,19 @@ namespace WindowsFormsApp1.WUI
         private void MainForm_Load(object sender, EventArgs e)
         {
 
-
-
-
             //initialize/load mock data to prof,student,course grids
-            University.InitMockData();
+            if (File.Exists(_JsonFile))
+            {
+                DeserializeFromJson();
+                
+            }
+            else
+            {
+                University.InitMockData();
+                
+            }
             LoadDataToGrids();
-
-            DeserializeFromJson();
             RefreshSchedule();
-
-
-
             // todo : load data on enter!
         }
 
@@ -199,7 +200,7 @@ namespace WindowsFormsApp1.WUI
         {
             // validates if professor is not occupied with another course at time.
             var professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
-            var countDailyCourses = professorSchedule.Count(x => x.Date == calendar.Date);
+            var countDailyCourses = professorSchedule.Count(x => x.Date.Date == calendar.Date);
 
             if (countDailyCourses >= 4) // && scheduleID == Guid.Empty
             {
@@ -214,7 +215,7 @@ namespace WindowsFormsApp1.WUI
         {
             //Validates if student is signed to 3 lessons in selected day/date
             var studentSchedule = University.ScheduledCourses.Where(x => x.StudentID == studentID);
-            var countDailyLessons = studentSchedule.Count(x => x.Date == calendar.Date);
+            var countDailyLessons = studentSchedule.Count(x => x.Date.Date == calendar.Date);
 
             if (countDailyLessons >= 3)
             {
@@ -229,13 +230,12 @@ namespace WindowsFormsApp1.WUI
             IEnumerable<Schedule> studentSchedule = University.ScheduledCourses.Where(x => x.StudentID == studentID);
             foreach (Schedule schedule in studentSchedule)
             {
-                if (schedule.Date == calendar.Date)
+                if (schedule.Date.Date == calendar.Date && schedule.CourseTime == courseTime)
                 {
-                    if (schedule.CourseTime == courseTime)
-                    {
+                    
                         MessageBox.Show("Selected Student is in another course in selected hour");
                         return false;
-                    }
+                    
                 }
             }
             return true;
@@ -247,13 +247,12 @@ namespace WindowsFormsApp1.WUI
             IEnumerable<Schedule> professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
             foreach (Schedule schedule in professorSchedule)
             {
-                if (schedule.Date == calendar.Date)
+                if (schedule.Date.Date == calendar.Date && schedule.CourseTime == courseTime)
                 {
-                    if (schedule.CourseTime == courseTime)
-                    {
+
                         MessageBox.Show("Selected Professor is in another scheduled course in selected hour");
                         return false;
-                    }
+
                 }
             }
             return true;
@@ -276,7 +275,7 @@ namespace WindowsFormsApp1.WUI
         private void SerializeToJson()
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            string data = serializer.Serialize(University.ScheduledCourses);                //serialize only sceduledcourse data
+            string data = serializer.Serialize(University);                
             string path = Path.Combine(Environment.CurrentDirectory, _JsonFile);
             File.WriteAllText(path, data);
 
@@ -294,7 +293,7 @@ namespace WindowsFormsApp1.WUI
                 {
                     string data = File.ReadAllText(path);
 
-                    University.ScheduledCourses = serializer.Deserialize<BindingList<Schedule>>(data);  //deserialize only scheduledcourse data
+                    University = serializer.Deserialize<University>(data);  
                     
                 }
 
@@ -321,35 +320,6 @@ namespace WindowsFormsApp1.WUI
             ctrlProfessorGrid.DataSource = University.Professors;
             ctrlStudentGrid.DataSource = University.Students;
             ctrlCourseGrid.DataSource = University.Courses;
-
-
-            //providing enums category as combobox
-            var professorRows = ctrlProfessorGrid.Rows;
-
-            foreach (DataGridViewRow row in professorRows)
-            {
-                List<string> comboBoxvalues = University.Professors.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).TeachingCourses.Select(x => x.ToString()).ToList();
-                //var comboBoxvalues = new List<string>();
-
-                //University.Professors.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).TeachingCourses.ForEach(s => comboBoxvalues.Add(s.ToString()));
-
-                (row.Cells[5] as DataGridViewComboBoxCell).DataSource = comboBoxvalues;
-            }
-
-            var studentRows = ctrlStudentGrid.Rows;
-
-            foreach (DataGridViewRow row in studentRows)
-            {
-                List<string> comboBoxvalues = University.Students.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).AttendingCourses.Select(x => x.ToString()).ToList();
-                //var comboBoxvalues = new List<string>();
-
-                //University.Students.FirstOrDefault(x => x.Name == row.Cells[0].Value.ToString()).AttendingCourses.ForEach(s => comboBoxvalues.Add(s.ToString()));
-
-                (row.Cells[5] as DataGridViewComboBoxCell).DataSource = comboBoxvalues;
-            }
-
-
-
         }
 
         private void GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime date, out string courseTime)

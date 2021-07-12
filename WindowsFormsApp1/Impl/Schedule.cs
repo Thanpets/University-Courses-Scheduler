@@ -20,7 +20,8 @@ namespace WindowsFormsApp1.Impl
         public string StudentSurname{ get; set; }
         public string CourseTime { get; set; }
         public DateTime Date { get; set; }
-        
+
+       
 
 
         
