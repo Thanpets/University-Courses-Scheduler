@@ -162,7 +162,7 @@ namespace WindowsFormsApp1.WUI
             return true;
         }
 
-        
+
 
         public void validate_professorCourse_with_studentCourse()
         {
@@ -199,8 +199,8 @@ namespace WindowsFormsApp1.WUI
 
         private void ctrlUpdateSelected_Click(object sender, EventArgs e)
         {
-            
-            if (University.ScheduledCourses.Count < 1)
+            var selectedSchedule = ctrlScheduleList.SelectedRows;
+            if (University.ScheduledCourses.Count < 1 || selectedSchedule.Count == 0)
             {
                 MessageBox.Show("Please select a schedule to update");
                 return;
@@ -225,13 +225,20 @@ namespace WindowsFormsApp1.WUI
                 return;
             }
             var selectedSchedule = ctrlScheduleList.SelectedRows;
+            if (selectedSchedule.Count == 0)
+            {
+                MessageBox.Show("Please select a schedule to  delete.");
+                return;
+            }
             var scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
+
             University.DeleteScheduledCourse(scheduleID);
+            RefreshSchedule();
         }
 
         private void RefreshSchedule()
         {
-            
+
             ctrlScheduleList.DataSource = University.ScheduledCourses;
             ctrlScheduleList.Refresh();
         }
@@ -264,8 +271,9 @@ namespace WindowsFormsApp1.WUI
             studentID = (Guid)selectedStudent[0].Cells[4].Value;
             courseID = (Guid)selectedCourse[0].Cells[4].Value;
 
-            
+
             var selectedSchedule = ctrlScheduleList.SelectedRows;    //schedule id 
+
             scheduleID = (Guid)selectedSchedule[0].Cells[7].Value;
 
             ctrlDatePicker.CustomFormat = "dd/MM/yyyy";  //change format to remove hour from calendar
@@ -273,6 +281,7 @@ namespace WindowsFormsApp1.WUI
             date = ctrlDatePicker.Value;
 
             courseTime = ctrlCourseHours.Text;
+
         }
     }
 }
