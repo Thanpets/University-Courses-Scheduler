@@ -86,16 +86,16 @@ namespace WindowsFormsApp1.WUI
             GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
 
-            if (ScheduleValidations(calendar, professorID, studentID, courseID,scheduleID, courseTime) == false)
-            {
-                return;
-            }
-            else
-            {
+            //if (ScheduleValidations(calendar, professorID, studentID, courseID,scheduleID, courseTime) == false)
+            //{
+            //    return;
+            //}
+            //else
+            //{
                 University.UpdateScheduledCourse(scheduleID, courseID, professorID, studentID, calendar.Date, courseTime);
 
                 RefreshSchedule();
-            }
+            //}
 
 
 
