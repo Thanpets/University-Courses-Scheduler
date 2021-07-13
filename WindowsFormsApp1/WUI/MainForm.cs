@@ -54,7 +54,9 @@ namespace WindowsFormsApp1.WUI
 
             GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
-            if (ScheduleValidations(calendar, professorID, studentID, courseID, courseTime) == false)
+            Guid scheduleID = Guid.Empty;
+
+            if (ScheduleValidations(calendar, professorID, studentID, courseID,scheduleID, courseTime) == false)
             {
                 return;
             }
@@ -83,7 +85,8 @@ namespace WindowsFormsApp1.WUI
 
             GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
-            if (ScheduleValidations(calendar, professorID, studentID, courseID, courseTime) == false)
+
+            if (ScheduleValidations(calendar, professorID, studentID, courseID,scheduleID, courseTime) == false)
             {
                 return;
             }
@@ -150,7 +153,7 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-        private bool ScheduleValidations(DateTime calendar, Guid professorID, Guid studentID, Guid courseID, string courseTime)
+        private bool ScheduleValidations(DateTime calendar, Guid professorID, Guid studentID, Guid courseID, Guid scheduleID, string courseTime)
         {
             if (string.IsNullOrEmpty(courseTime))
             {
@@ -170,11 +173,11 @@ namespace WindowsFormsApp1.WUI
             {
                 return false;
             }
-            if (ValidateStudentCourses(calendar, studentID) == false)
+            if (ValidateStudentCourses(calendar, studentID,scheduleID) == false)
             {
                 return false;
             }
-            if (ValidateProfessorCourses(calendar, professorID) == false)
+            if (ValidateProfessorCourses(calendar, professorID,scheduleID) == false)
             {
                 return false;
             }
@@ -199,30 +202,40 @@ namespace WindowsFormsApp1.WUI
             return true;
         }
 
-        public bool ValidateProfessorCourses(DateTime calendar, Guid professorID)
+        public bool ValidateProfessorCourses(DateTime calendar, Guid professorID,Guid scheduleID)
         {
             // validates if professor is not occupied with another course at time.
             var professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
             var countDailyCourses = professorSchedule.Count(x => x.Date.Date == calendar.Date);
 
-            if (countDailyCourses >= 4)
+            if (countDailyCourses >= 4 && scheduleID == Guid.Empty)
             {
                 MessageBox.Show("Selected Professor already scheduled to 4 courses in this day");
+                return false;
+            }
+            if (countDailyCourses >= 5 && scheduleID != Guid.Empty)
+            {
+                MessageBox.Show("Selected Professor to update is scheduled to 4 courses in this day");
                 return false;
             }
             return true;
         }
 
 
-        public bool ValidateStudentCourses(DateTime calendar, Guid studentID)
+        public bool ValidateStudentCourses(DateTime calendar, Guid studentID,Guid scheduleID)
         {
             //Validates if student is signed to 3 lessons in selected day/date
             var studentSchedule = University.ScheduledCourses.Where(x => x.StudentID == studentID);
             var countDailyLessons = studentSchedule.Count(x => x.Date.Date == calendar.Date);
 
-            if (countDailyLessons >= 3)
+            if (countDailyLessons >= 3 && scheduleID == Guid.Empty)
             {
                 MessageBox.Show("Selected Student already scheduled to  3 courses in this day");
+                return false;
+            }
+            if (countDailyLessons >= 4 && scheduleID != Guid.Empty)
+            {
+                MessageBox.Show("Selected Student to update is scheduled to 3 courses in this day");
                 return false;
             }
             return true;
