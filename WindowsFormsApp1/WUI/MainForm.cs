@@ -54,7 +54,7 @@ namespace WindowsFormsApp1.WUI
 
             GetSelectedValues(out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
-            if (ScheduleValidations(calendar, professorID, studentID, courseTime) == false)
+            if (ScheduleValidations(calendar, professorID, studentID, courseID, courseTime) == false)
             {
                 return;
             }
@@ -83,7 +83,7 @@ namespace WindowsFormsApp1.WUI
 
             GetSelectedValues(out Guid scheduleID, out Guid courseID, out Guid professorID, out Guid studentID, out DateTime calendar, out string courseTime);
 
-            if (ScheduleValidations(calendar, professorID, studentID, courseTime) == false)
+            if (ScheduleValidations(calendar, professorID, studentID, courseID, courseTime) == false)
             {
                 return;
             }
@@ -150,7 +150,7 @@ namespace WindowsFormsApp1.WUI
 
         }
 
-        private bool ScheduleValidations(DateTime calendar, Guid professorID, Guid studentID, string courseTime)
+        private bool ScheduleValidations(DateTime calendar, Guid professorID, Guid studentID, Guid courseID, string courseTime)
         {
             if (string.IsNullOrEmpty(courseTime))
             {
@@ -161,7 +161,15 @@ namespace WindowsFormsApp1.WUI
             {
                 return false;
             }
+            if (ProfessorAndStudentCourseCheck(professorID,  studentID, courseID)==false)
+            {
+                return false;
+            }
 
+            if (ProfessorStudentHasSimilarCourses(professorID, studentID) == false)
+            {
+                return false;
+            }
             if (ValidateStudentCourses(calendar, studentID) == false)
             {
                 return false;
@@ -197,7 +205,7 @@ namespace WindowsFormsApp1.WUI
             var professorSchedule = University.ScheduledCourses.Where(x => x.ProfessorID == professorID);
             var countDailyCourses = professorSchedule.Count(x => x.Date.Date == calendar.Date);
 
-            if (countDailyCourses >= 4) 
+            if (countDailyCourses >= 4)
             {
                 MessageBox.Show("Selected Professor already scheduled to 4 courses in this day");
                 return false;
@@ -256,11 +264,65 @@ namespace WindowsFormsApp1.WUI
 
 
 
-
-        private void ValidateProfessorCourseWithStudentCourse(Guid professorID, Guid studentID)
+        private bool ProfessorAndStudentCourseCheck(Guid professorID, Guid studentID,Guid courseID)
         {
+            Professor professor = University.Professors.FirstOrDefault(x => x.ID == professorID);
+            Student student = University.Students.FirstOrDefault(x => x.ID == studentID);
+            Course course = University.Courses.FirstOrDefault(x => x.ID == courseID);
+            bool professorCanTeach = false;
+            bool studentCanLearn = false;
+            foreach (var professorCourse in professor.TeachingCourses)
+            {
+                if (professorCourse==course.Category)
+                {
+                    professorCanTeach = true;
+                }
+            }
+            foreach (var studentCourse in student.AttendingCourses)
+            {
+                if (studentCourse == course.Category)
+                {
+                    studentCanLearn = true;
+                }
 
-            //TODO: ???
+            }
+            if (professorCanTeach == true && studentCanLearn == true)
+            {
+                return true;
+            }
+            else
+            {
+                if (professorCanTeach == false)
+                {
+                    MessageBox.Show("Professor cannot teach the selected course");
+                }
+                if (studentCanLearn== false )
+                {
+                    MessageBox.Show("Student cannot learn the selected course");
+                }
+                return false;
+            }
+
+        }
+        private bool ProfessorStudentHasSimilarCourses(Guid professorID, Guid studentID)
+        {
+            Professor professor = University.Professors.FirstOrDefault(x => x.ID == professorID);
+            Student student = University.Students.FirstOrDefault(x => x.ID == studentID);
+            foreach (var professorCanTeach in professor.TeachingCourses)
+            {
+                foreach (var studentCanLearn in student.AttendingCourses)
+                {
+                    if (professorCanTeach == studentCanLearn)
+                    {
+                        return true;
+                    }
+
+                }
+
+            }
+            MessageBox.Show("Professor with student  should have at least one same course");
+            return false;
+           
 
 
         }
